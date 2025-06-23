@@ -1,7 +1,17 @@
+import type { CartItem, Guitar } from "../types/types";
 
-function Header ({cart, increaseQuantity, removeFromCart, removeOneFromCart, clearCart, isEmpty, totalToPay}) {
+interface HeaderProps {
+    cart: CartItem[];
+    increaseQuantity: (id: Guitar['id']) => void;
+    removeFromCart: (id: Guitar['id']) => void;
+    removeOneFromCart: (id: Guitar['id']) => void;
+    clearCart: () => void;
+    isEmpty: boolean;
+    totalToPay: number;
+}
 
-    
+
+function Header ({cart, increaseQuantity, removeFromCart, removeOneFromCart, clearCart, isEmpty, totalToPay} : HeaderProps) {
 
     return (
         <header className="py-5 header">

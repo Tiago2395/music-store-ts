@@ -1,6 +1,13 @@
-function Guitar ({guitar, addToCart}) {
+import type { Guitar as GuitarType } from "../types/types";
 
-    const {id, image, name, description, price} = guitar;
+interface GuitarProps {
+    guitar: GuitarType;
+    addToCart: (item: GuitarType) => void;
+}
+
+function Guitar ({guitar, addToCart} : GuitarProps) {
+
+    const {image, name, description, price} = guitar;
 
     return (
         <div className="col-md-6 col-lg-4 my-4 row align-items-center">
