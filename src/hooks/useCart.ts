@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { db } from "../data/db";
 import { useMemo } from "react";
-
+import type { Guitar, CartItem } from "../types/types";
 
 const useCart = () => {
-    const initialCart = () => {
+    const initialCart = () : CartItem[] => {
     const localStorageItems = localStorage.getItem('cart');
     return localStorageItems ? JSON.parse(localStorageItems) : [];
   }
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Guitar[]>([]);
   const [cart, setCart] = useState(initialCart());
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const useCart = () => {
 
   const MAX_ITEMS = 5;
 
-  function addToCart(item) {
+  function addToCart(item : Guitar) {
     const itemExists = cart.findIndex(guitar => guitar.id === item.id);
 
     if(itemExists != -1) { //Si ya está el item en el carrito:
@@ -28,12 +28,12 @@ const useCart = () => {
         setCart(updatedCart); //Actualizamos el carrito
       }
     } else { //Si no está el item en el carrito
-      item.amount = 1;  //Ponemos la cantidad en 1
-      setCart((prevCart) => [...prevCart, item]); //Añadimos el item a continuación de lo que ya había
+      const newItem : CartItem = {...item, amount : 1}; //Castemos de Guitar a CartItem. Además, ponemos la cantidad en 1
+      setCart((prevCart) => [...prevCart, newItem]); //Añadimos el item a continuación de lo que ya había
     }
   }
 
-  function increaseQuantity(id) {
+  function increaseQuantity(id : Guitar['id']) {
     const updatedCart = cart.map((item) => {
       if(item.id === id && item.amount < MAX_ITEMS) {
         return {
@@ -46,11 +46,11 @@ const useCart = () => {
     setCart(updatedCart);
   }
 
-  function removeFromCart(id) {
+  function removeFromCart(id : Guitar['id']) {
     setCart( (prevCart) => prevCart.filter(guitar => guitar.id !== id));
   }
 
-  function removeOneFromCart(id) {
+  function removeOneFromCart(id : Guitar['id']) {
     const updatedCart = cart.map((item) => {
       if(item.id === id) {
         if(item.amount > 1) {
